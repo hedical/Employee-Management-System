@@ -222,18 +222,23 @@ const addNewDepartment = (departmentInfo) => {
 
 // Role
 
-const updateRole = (newRole, targetEmployee) => {
+const updateRole = (obj) => {
     return new Promise((resolve, reject) => {
         connection
-            .query(`UPDATE employee SET role_id = ? WHERE id = ?`, [[newRole], [targetEmployee]], (err) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve({ msg: "Role successfully updated" })
-                    console.log("Role successfully updated !")
-                        ;
-                }
-            })
+            .query(`UPDATE employee SET ? WHERE ?`,
+                [
+                    { role_id: obj.updateRoleValue },
+                    { id: obj.employeeUpdate }
+                ],
+                (err) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve({ msg: "Role successfully updated" })
+                        console.log("Role successfully updated !")
+                            ;
+                    }
+                })
     })
 }
 

@@ -58,7 +58,7 @@ VALUES ("Engineer", 163000, 4);
 INSERT INTO role(title, salary, department_id)
 VALUES ("Happiness officer", 120000, 1);
 
-INSERT INTO employee(first_name, last_name, role_id, manager_id)
+INSERT INTO employee(first_name, last_name, role_id)
 VALUES ("Hedi", "Calabrese", 1);
 
 INSERT INTO employee(first_name, last_name, role_id, manager_id)

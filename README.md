@@ -9,10 +9,11 @@ This tool provides you a CLI to manage and track your employees. You can add dep
 
 # Installation
 Make sure you have node js installed. Then, clone this repo in a folder on your computer and run, npm install and then npm start in your terminal.
-You will have also to create a database called employee.db on your local drive. You can use the file seed.sql if you want to test and populate the database.
+You will have also to create a database called employee.db on your local drive. Then, in connection.js, change the information to target your database, and insert your password. You can use the file seed.sql if you want to test and populate the database.
 
 # Usage
     npm start
+![gif](./assets/demo.gif)
 # Licence
 No licence
 # Credits

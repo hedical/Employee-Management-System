@@ -194,8 +194,9 @@ const updateRoleEmployee = async () => {
                 choices: roleList.map(a => { return { name: a.title, value: a.id } }),
             },
         ]).then((res) => {
+            updateRole(res)
 
-            updateRole(res.employeeUpdate, res.updateRoleValue)
+
             mainMenu()
 
         })
