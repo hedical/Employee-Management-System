@@ -14,7 +14,7 @@ const readAllInfo = () => {
                 role.title,
                 role.salary,
                 department.name as department,
-                employee.manager_id as manager
+                CASE WHEN m.last_name is null then "None" else CONCAT(m.first_name, " ",m.last_name) END as manager
             
                 FROM employee
             
@@ -52,8 +52,8 @@ const readByRole = () => {
             role.title,
             role.salary,
             department.name as department,
-            employee.manager_id as manager
-        
+            CASE WHEN m.last_name is null then "None" else CONCAT(m.first_name, " ",m.last_name) END as manager
+            
             FROM employee
         
             LEFT JOIN role
@@ -90,8 +90,8 @@ const readByDepartment = () => {
             role.title,
             role.salary,
             department.name as department,
-            employee.manager_id as manager
-        
+            CASE WHEN m.last_name is null then "None" else CONCAT(m.first_name, " ",m.last_name) END as manager
+            
             FROM employee
         
             LEFT JOIN role

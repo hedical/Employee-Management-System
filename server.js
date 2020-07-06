@@ -1,7 +1,5 @@
-// const mysql = require("mysql");
 const inquirer = require("inquirer");
-// const console_table = require("console.table");
-const { readAllInfo, readAllEmployees, readAllRoles, readAllDepartments, addNewEmployee, readByRole, readByDepartment, addNewRole, addNewDepartment, updateRole, deleteEmployee } = require("./config/orm");
+const { readAllInfo, readAllEmployees, readAllRoles, readAllDepartments, addNewEmployee, readByRole, readByDepartment, addNewRole, addNewDepartment, updateRole, deleteEmployee, countInfo } = require("./config/orm");
 const connection = require("./config/connection");
 
 // Init function 
@@ -15,7 +13,7 @@ function mainMenu() {
         name: "mainMenu",
         message: "What would you like to do?",
         type: "list",
-        choices: ["View all employees", "View all employees by department", "View all employees by role", "View company information", "Add employee", "Add department", "Add role", "Update employee role", "Delete employee", "Exit"]
+        choices: ["View all employees", "View all employees by department", "View all employees by role", "Add employee", "Add department", "Add role", "Update employee role", "Delete employee", "Exit"]
     }]).then((res) => {
         switch (res.mainMenu) {
             case "Exit":
@@ -23,7 +21,6 @@ function mainMenu() {
                 process.exit();
             case "View all employees":
                 readAllInfo().then((res) => {
-                    // console.log(res);
                     mainMenu()
                 })
                 break
