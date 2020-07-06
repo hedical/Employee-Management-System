@@ -191,11 +191,45 @@ const addNewEmployee = (employeeInfo) => {
     })
 }
 
+// Role
+
+const addNewRole = (roleInfo) => {
+    return new Promise((resolve, reject) => {
+        connection
+            .query(`INSERT INTO role SET ?`, [roleInfo], (err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve({ msg: "Role Successfully added" })
+                    console.log("Role Successfully added !")
+                        ;
+                }
+            })
+    })
+}
+
+// Role
+
+const addNewDepartment = (departmentInfo) => {
+    return new Promise((resolve, reject) => {
+        connection
+            .query(`INSERT INTO department SET ?`, [departmentInfo], (err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve({ msg: "Department Successfully added" })
+                    console.log("Department Successfully added !")
+                        ;
+                }
+            })
+    })
+}
+
 // EXPORTED FUNCTIONS 
 
 module.exports = {
     readAllInfo, // Joined table
     readAllEmployees, readAllRoles, readAllDepartments, // Simple read
     readByRole, readByDepartment, // Ordered list
-    addNewEmployee
+    addNewEmployee, addNewRole, addNewDepartment, // Add items to tables
 }
