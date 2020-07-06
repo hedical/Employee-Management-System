@@ -122,14 +122,12 @@ const readByDepartment = () => {
 const readAllRoles = () => {
     return new Promise((resolve, reject) => {
         connection
-            .query(`SELECT title FROM role ORDER BY id;`, (err, data) => {
+            .query(`SELECT title, id FROM role ORDER BY id;`, (err, data) => {
                 if (err) {
                     reject(err);
                 } else {
 
-                    let result = data.map(a => a.title);
-                    resolve(result)
-                    return result
+                    resolve(data)
                 }
             })
     })
@@ -140,13 +138,11 @@ const readAllRoles = () => {
 const readAllDepartments = () => {
     return new Promise((resolve, reject) => {
         connection
-            .query(`SELECT name FROM department ORDER BY id;`, (err, data) => {
+            .query(`SELECT name, id FROM department ORDER BY id;`, (err, data) => {
                 if (err) {
                     reject(err);
                 } else {
-                    let result = data.map(a => a.name);
-                    resolve(result)
-                    return result
+                    resolve(data)
                         ;
                 }
             })
@@ -158,13 +154,11 @@ const readAllDepartments = () => {
 const readAllEmployees = () => {
     return new Promise((resolve, reject) => {
         connection
-            .query(`SELECT first_name, last_name FROM employee ORDER BY id;`, (err, data) => {
+            .query(`SELECT id, first_name, last_name FROM employee ORDER BY id;`, (err, data) => {
                 if (err) {
                     reject(err);
                 } else {
-                    let result = data.map(a => a.last_name);
-                    resolve(result)
-                    return result
+                    resolve(data)
                         ;
                 }
             })
@@ -184,7 +178,6 @@ const addNewEmployee = (employeeInfo) => {
                 } else {
                     resolve({ msg: "Employee Successfully added" })
                     console.log("Employee Successfully added !")
-                        // console.table(employeeInfo);
                         ;
                 }
             })
@@ -208,7 +201,7 @@ const addNewRole = (roleInfo) => {
     })
 }
 
-// Role
+// Department
 
 const addNewDepartment = (departmentInfo) => {
     return new Promise((resolve, reject) => {
@@ -225,6 +218,44 @@ const addNewDepartment = (departmentInfo) => {
     })
 }
 
+// UPDATE FUNCTION 
+
+// Role
+
+const updateRole = (newRole, targetEmployee) => {
+    return new Promise((resolve, reject) => {
+        connection
+            .query(`UPDATE employee SET role_id = ? WHERE id = ?`, [[newRole], [targetEmployee]], (err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve({ msg: "Role successfully updated" })
+                    console.log("Role successfully updated !")
+                        ;
+                }
+            })
+    })
+}
+
+// DELETE FUNCTION 
+
+// Employee
+
+const deleteEmployee = (id) => {
+    return new Promise((resolve, reject) => {
+        connection
+            .query(`DELETE FROM employee WHERE id = ?`, [id], (err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve({ msg: "Employee deleted" })
+                    console.log("Employee deleted !")
+                        ;
+                }
+            })
+    })
+}
+
 // EXPORTED FUNCTIONS 
 
 module.exports = {
@@ -232,4 +263,6 @@ module.exports = {
     readAllEmployees, readAllRoles, readAllDepartments, // Simple read
     readByRole, readByDepartment, // Ordered list
     addNewEmployee, addNewRole, addNewDepartment, // Add items to tables
+    updateRole, // Update items to tables
+    deleteEmployee, // Delete item from tables
 }

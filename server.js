@@ -1,7 +1,7 @@
 // const mysql = require("mysql");
 const inquirer = require("inquirer");
 // const console_table = require("console.table");
-const { readAllInfo, readAllEmployees, readAllRoles, readAllDepartments, addNewEmployee, readByRole, readByDepartment, addNewRole, addNewDepartment } = require("./config/orm");
+const { readAllInfo, readAllEmployees, readAllRoles, readAllDepartments, addNewEmployee, readByRole, readByDepartment, addNewRole, addNewDepartment, updateRole, deleteEmployee } = require("./config/orm");
 const connection = require("./config/connection");
 
 // Init function 
@@ -15,7 +15,7 @@ function mainMenu() {
         name: "mainMenu",
         message: "What would you like to do?",
         type: "list",
-        choices: ["View all employees", "View all employees by department", "View all employees by role", "View company information", "Add employee", "Add department", "Add role", "Update employee role", "Exit"]
+        choices: ["View all employees", "View all employees by department", "View all employees by role", "View company information", "Add employee", "Add department", "Add role", "Update employee role", "Delete employee", "Exit"]
     }]).then((res) => {
         switch (res.mainMenu) {
             case "Exit":
@@ -46,7 +46,12 @@ function mainMenu() {
             case "Add department":
                 addDepartment()
                 break
-
+            case "Update employee role":
+                updateRoleEmployee()
+                break
+            case "Delete employee":
+                deleteEmp()
+                break
             default:
                 break
 
@@ -76,22 +81,24 @@ const addEmployee = async () => {
                 name: "employeeRole",
                 message: "What role?",
                 type: "list",
-                choices: roleList
+                choices: roleList.map(a => { return { name: a.title, value: a.id } }),
             },
             {
                 name: "employeeManager",
                 message: "Who is the manager for this employee?",
                 type: "list",
-                choices: employeeList
+                choices: employeeList.map(a => { return { name: a.first_name + " " + a.last_name, value: a.id } }),
             },
         ]).then((res) => {
 
             const first_name = res.employeeFname
             const last_name = res.employeeLname
-            const role_id = roleList.indexOf(res.employeeRole) + 1
-            const manager_id = employeeList.indexOf(res.employeeManager) + 1
+            const role_id = res.employeeRole
+            const manager_id = res.employeeManager
 
             const final_employee = { first_name, last_name, role_id, manager_id }
+            console.log(final_employee);
+
 
             addNewEmployee(final_employee)
             mainMenu()
@@ -107,6 +114,7 @@ const addEmployee = async () => {
 const addRole = async () => {
     try {
         let departmentList = await readAllDepartments()
+
         inquirer.prompt([
             {
                 name: "roleTitle",
@@ -122,13 +130,13 @@ const addRole = async () => {
                 name: "department",
                 message: "What is the department for this role?",
                 type: "list",
-                choices: departmentList
+                choices: departmentList.map(a => { return { name: a.name, value: a.id } }),
             },
         ]).then((res) => {
 
             const title = res.roleTitle
             const salary = res.salary
-            const department_id = departmentList.indexOf(res.department) + 1
+            const department_id = res.department
 
             const final_role = { title, salary, department_id }
 
@@ -159,6 +167,74 @@ const addDepartment = async () => {
 
             addNewDepartment(final_department)
 
+            mainMenu()
+        })
+    } catch (err) {
+        console.log({ error: err });
+
+    }
+}
+
+// Function to start prompt to update employee role
+
+const updateRoleEmployee = async () => {
+
+    let employeeList = await readAllEmployees()
+    let roleList = await readAllRoles()
+
+    try {
+        inquirer.prompt([
+            {
+                name: "employeeUpdate",
+                message: "For wich one of these employee would like to update the role?",
+                type: "list",
+                choices: employeeList.map(a => { return { name: a.first_name + " " + a.last_name, value: a.id } }),
+            },
+            {
+                name: "updateRoleValue",
+                message: "What role would you like to set for this employee?",
+                type: "list",
+                choices: roleList.map(a => { return { name: a.title, value: a.id } }),
+            },
+        ]).then((res) => {
+
+            updateRole(res.employeeUpdate, res.updateRoleValue)
+            mainMenu()
+
+        })
+    } catch (err) {
+        console.log({ error: err });
+
+    }
+}
+
+// Function to start prompt to update employee role
+
+const deleteEmp = async () => {
+
+    let employeeList = await readAllEmployees()
+
+    try {
+        inquirer.prompt([
+            {
+                name: "employeeToDelete",
+                message: "Wich one of this employee would you like to delete?",
+                type: "list",
+                choices: employeeList.map(a => { return { name: a.first_name + " " + a.last_name, value: a.id } })
+
+            },
+            {
+                name: "confirm",
+                message: "Are you sure?",
+                type: "confirm",
+            },
+        ]).then((res) => {
+
+            console.log(res.confirm);
+
+            if (res.confirm === true) {
+                deleteEmployee(res.employeeToDelete)
+            }
             mainMenu()
         })
     } catch (err) {
