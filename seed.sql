@@ -43,19 +43,19 @@ VALUES ("Marketing");
 INSERT INTO department(name)
 VALUES ("Financial");
 
-INSERT INTO role(title, salary, department_id)
+INSERT INTO role(title, salary, departement_id)
 VALUES ("CEO", 189000, 6);
 
-INSERT INTO role(title, salary, department_id)
+INSERT INTO role(title, salary, departement_id)
 VALUES ("Manager", 189000, 3);
 
-INSERT INTO role(title, salary, department_id)
+INSERT INTO role(title, salary, departement_id)
 VALUES ("CTO", 170000, 2);
 
-INSERT INTO role(title, salary, department_id)
+INSERT INTO role(title, salary, departement_id)
 VALUES ("Engineer", 163000, 4);
 
-INSERT INTO role(title, salary, department_id)
+INSERT INTO role(title, salary, departement_id)
 VALUES ("Happiness officer", 120000, 1);
 
 INSERT INTO employee(first_name, last_name, role_id)
